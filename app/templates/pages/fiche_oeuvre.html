@@ -1,0 +1,35 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}| {{titre}}{%endblock%}
+
+{% block afternav %}
+    {% include "partials/recherche.html" %}
+{%endblock%}
+{% block corps %}
+
+<h1>Fiche de l'oeuvre {{oeuvre.oeuvre_titre}}</h1>
+
+
+    <p>Cette oeuvre est conservée ici: <a href="{{url_for('fiche_lieu', id_lieu=lieu.lieu_id)}}">{{lieu.lieu_nom}}</a></p>
+    <p>Date de création: {{oeuvre.date_creation}}</p>
+
+    {% if artistes %}
+    <p>{{artistes|length}} artiste(s) ont contribué:</p>
+        <ul>
+            {% for artiste in artistes %}
+                <li><a href="{{url_for('fiche_artiste', id_artiste=artiste.artiste_id)}}">{{artiste.artiste_nom}}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+<form class="form" method="POST" action="{{url_for("fiche_oeuvre", id_oeuvre=oeuvre.oeuvre_id)}}">
+  <div>
+    <button type="submit" class="btn btn-danger">Supprimer</button>
+  </div>
+</form>
+
+<div>
+    <a href="{{url_for('modifier_oeuvre', id_oeuvre=oeuvre.oeuvre_id)}}"><button type="submit" class="btn btn-primary">Modifier</button></a>
+  </div>
+{% endblock %}

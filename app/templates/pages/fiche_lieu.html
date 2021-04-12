@@ -1,0 +1,29 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}| {{titre}}{%endblock%}
+
+{% block afternav %}
+    {% include "partials/recherche.html" %}
+{%endblock%}
+{% block corps %}
+
+<h1>Fiche du lieu de conservation {{lieu.lieu_nom}}</h1>
+<!-- Pour chaque oeuvre conservée, on affiche son titre et un lien vers sa fiche si elle existe-->
+    {% if oeuvres %}
+    <p>{{oeuvres|length}} oeuvres sont conservées dans ce lieu:</p>
+        <ul>
+            {% for oeuvre in oeuvres %}
+                <li><a href="{{url_for('fiche_oeuvre', id_oeuvre=oeuvre.oeuvre_id)}}">{{oeuvre.oeuvre_titre}}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+<form class="form" method="POST" action="{{url_for("fiche_lieu", id_lieu=lieu.lieu_id)}}">
+  <div>
+    <button type="submit" class="btn btn-danger">Supprimer</button>
+  </div>
+</form>
+<div>
+    <a href="{{url_for('modifier_lieu', id_lieu=lieu.lieu_id)}}"><button type="submit" class="btn btn-primary">Modifier</button></a>
+  </div>
+{% endblock %}

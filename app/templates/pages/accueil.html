@@ -1,0 +1,21 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}| {{titre}}{%endblock%}
+
+{% block afternav %}
+    {% include "partials/recherche.html" %}
+{%endblock%}
+{% block corps %}
+
+<h1>Bienvenue sur la base Minimusée !</h1>
+    {% if artistes %}
+    <p>{{artistes|length}} dernier(s)  artiste(s):</p>
+        <ul>
+            {% for artiste in artistes %}
+                <li><a href="{{url_for("fiche_artiste", id_artiste=artiste.artiste_id)}}">{{artiste.artiste_nom}}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>La base de données est en cours de constitution</p>
+    {% endif %}
+{% endblock %}

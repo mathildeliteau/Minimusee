@@ -1,0 +1,42 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}| {{titre}}{%endblock%}
+
+{% block corps %}
+
+<h1>Insertion d'une oeuvre</h1>
+<p>Complétez le formulaire et cliquez sur "Valider".</p>
+<form class="form" method="POST" action="{{url_for("insertion_oeuvre")}}">
+  <div class="form-group row">
+    <label for="insertion-oeuvre-titre" class="col-sm-2 col-form-label">Titre de l'oeuvre</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="insertion-oeuvre-titre" name="titre" placeholder="Titre de l'oeuvre">
+    </div>
+  </div>
+   <div class="form-group row">
+    <label for="insertion-date-creation" class="col-sm-2 col-form-label">Date de création</label>
+    <div class="col-sm-10">
+      <input type="number" class="form-control" id="insertion-date-creation" name="creation" placeholder="Date de création">
+    </div>
+  </div>
+<div class="form-group">
+    <label for="lieux">Lieux</label>
+    <select class="form-control" id="lieux" name="lieu">
+        {% for lieu in lieux %}
+        <option value="{{lieu.lieu_id}}">{{lieu.lieu_nom}}</option>
+        {% endfor %}
+    </select>
+  </div>
+<div class="form-group">
+    <label for="artiste">Artistes</label>
+    <select class="form-control" id="artiste" name="artiste" multiple>
+        {% for artiste in artistes %}
+        <option value="{{artiste.artiste_id}}">{{artiste.artiste_nom}}</option>
+        {% endfor %}
+    </select>
+  </div>
+  <div>
+    <button type="submit" class="btn btn-primary">Valider</button>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}| {{titre}}{%endblock%}
+
+{% block corps %}
+
+<h1>Modification d'une oeuvre</h1>
+<p>Complétez le formulaire et cliquez sur "Modifier".</p>
+
+<!-- Création d'un formulaire avec les champs nécessaires pour remplir la table Oeuvre-->
+<form class="form" method="POST" action="{{url_for("modifier_oeuvre", id_oeuvre=oeuvre.oeuvre_id)}}">
+  <div class="form-group row">
+    <label for="modification-oeuvre-titre" class="col-sm-2 col-form-label">Titre de l'oeuvre</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="modification-oeuvre-titre" name="titre" placeholder="Ex. Mona Lisa" value="{{oeuvre.oeuvre_titre}}">
+    </div>
+  </div>
+   <div class="form-group row">
+    <label for="modification-date-creation" class="col-sm-2 col-form-label">Date de création</label>
+    <div class="col-sm-10">
+      <input type="number" class="form-control" id="modification-date-creation" name="creation" placeholder="1503" value="{{oeuvre.date_creation}}">
+    </div>
+  </div>
+<!-- Affichage des lieux déjà enregistrés en base qui permet une sélection à l'utilisateur-->
+<div class="form-group">
+    <label for="lieux">Lieux</label>
+    <select class="form-control" id="lieux" name="lieu">
+        {% for lieu_ in lieux %}
+        <!--Si le lieu est déjà en base, on le préselectionne-->
+        <option value="{{lieu_.lieu_id}}" {%if lieu.lieu_id==lieu_.lieu_id%}selected{%endif%}>{{lieu_.lieu_nom}}</option>
+        {% endfor %}
+    </select>
+  </div>
+<div class="form-group">
+    <label for="artiste">Artistes</label>
+    <!--création d'une variable qui est une liste dont on ne veut pas qu'elle s'affiche-->
+    <div style="display:none">
+        <!--création d'une liste vide-->
+        {%set artistes_base=[]%}
+        <!--récupération des id des artistes présents en base et liés à l'oeuvre-->
+        {%for artiste_oeuvre in artistes_oeuvres%}
+        <!--ajout des ids à la liste vide-->
+        {{artistes_base.append(artiste_oeuvre.artiste_id)}}{%endfor%}
+    </div>
+    <select class="form-control" id="artiste" name="artiste" multiple>
+        {% for artiste in artistes %}
+        <!--présélection de l'artiste s'il est déjà présent en base et lié à l'oeuvre-->
+        <option value="{{artiste.artiste_id}}" {%if artiste.artiste_id in artistes_base%}selected{%endif%}>{{artiste.artiste_nom}}</option>
+        {% endfor %}
+    </select>
+  </div>
+  <div>
+    <button type="submit" class="btn btn-primary">Modifier</button>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}| {{titre}}{%endblock%}
+
+{% block corps %}
+
+<h1>Insertion d'un lieu</h1>
+<p>Complétez le formulaire et cliquez sur "Valider".</p>
+<form class="form" method="POST" action="{{url_for("insertion_lieu")}}">
+  <div class="form-group row">
+    <label for="insertion-lieu-nom" class="col-sm-2 col-form-label">Nom du lieu</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="insertion-lieu-nom" name="nom" placeholder="Nom du lieu">
+    </div>
+  </div>
+   <div class="form-group row">
+    <label for="insertion-lieu-ville" class="col-sm-2 col-form-label">Nom de la ville</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="insertion-lieu-ville" name="ville" placeholder="Nom de la ville">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="insertion-lieu-pays" class="col-sm-2 col-form-label">Nom du pays</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="insertion-lieu-pays" name="pays" placeholder="Nom du pays">
+    </div>
+  </div>
+  <div>
+    <button type="submit" class="btn btn-primary">Valider</button>
+  </div>
+</form>
+{% endblock %}

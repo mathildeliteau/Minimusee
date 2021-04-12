@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <link rel="stylesheet" href="/statics/css/styles.css">
+        <meta charset="UTF-8">
+        <title> Minimusée | {%block titre %}{%endblock%}</title>
+        {% include "partials/css.html" %}
+        {% include "partials/metadata.html" %}
+<!--On établit le style par défaut qui régit tous les fichiers html-->
+        <style type="text/css">
+            .hero  {
+                background-position: center center;
+                padding:10vh;
+                background-image: url({{url_for('static', filename="images/Image.jpeg")}});
+            }
+            .container .hero {
+                background-image: none;
+            }
+        </style>
+
+    </head>
+    <body>
+
+      <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
+        <a class="navbar-brand" href="{{ url_for('accueil') }}">Minimusée</a>
+          <ul class="navbar-nav mr-auto">
+            {% if not current_user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for("inscription")}}">Inscription</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for("connexion")}}">Connexion</a>
+              </li>
+            {% else %}
+              <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Insertions
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{{url_for('insertion_lieu')}}">Insertion d'un lieu</a>
+          <a class="dropdown-item" href="{{url_for('insertion_artiste')}}">Insertion d'un artiste</a>
+          <a class="dropdown-item" href="{{url_for('insertion_oeuvre')}}">Insertion d'une oeuvre</a>
+        </div>
+      </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for("deconnexion")}}">Déconnexion ({{current_user.user_nom}})</a>
+              </li>
+            {% endif %}
+        </ul>
+        <form class="form-inline" action="{{url_for('recherche')}}" method="GET">
+          <input class="form-control" name="keyword" type="search" placeholder="Recherche rapide" aria-label="Recherche">
+          <button class="btn btn-info" type="submit">Rechercher</button>
+        </form>
+      </nav>
+      {% block afternav %}{%endblock%}
+      <div class="container" style="background-color: #ffe4b5; filter : sepia(20%) ;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+          <div class="row">
+              <div class="col">
+                {% for category, message in messages %}
+                  <div class="alert alert-{{category}}" role="alert">{{ message }}</div>
+                {% endfor %}
+              </div>
+          </div>
+          {% endif %}
+        {% endwith %}
+        <div class="row">
+            <div class="col">
+            {% block corps %}{% endblock %}
+            </div>
+        </div>
+      </div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>

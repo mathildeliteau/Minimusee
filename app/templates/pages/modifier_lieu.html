@@ -1,0 +1,34 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}| {{titre}}{%endblock%}
+
+{% block corps %}
+
+<h1>Modification d'un lieu</h1>
+<p>Complétez le formulaire et cliquez sur "Modifier".</p>
+
+<!-- Création d'un formulaire avec les champs nécessaires pour remplir la table Lieu-->
+<form class="form" method="POST" action="{{url_for("modifier_lieu", id_lieu=lieu.lieu_id)}}">
+  <div class="form-group row">
+    <label for="modification-lieu-nom" class="col-sm-2 col-form-label">Nom</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="modification-lieu-nom" name="nom" placeholder="Ex. Musée d'Orsay" value="{{lieu.lieu_nom}}">
+    </div>
+  </div>
+   <div class="form-group row">
+    <label for="modification-lieu-ville" class="col-sm-2 col-form-label">Ville</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="modification-lieu-ville" name="ville" placeholder="ex. Paris" value="{{lieu.lieu_ville}}">
+    </div>
+  </div>
+    <div class="form-group row">
+    <label for="modification-lieu-pays" class="col-sm-2 col-form-label">Pays</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="modification-lieu-pays" name="pays" placeholder="ex. France" value="{{lieu.lieu_pays}}">
+    </div>
+  </div>
+  <div>
+    <button type="submit" class="btn btn-primary">Modifier</button>
+  </div>
+</form>
+{% endblock %}

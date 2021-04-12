@@ -1,0 +1,38 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}| {{titre}}{%endblock%}
+
+{% block corps %}
+
+<h1>Insertion d'un artiste</h1>
+<p>Complétez le formulaire et cliquez sur "Valider".</p>
+<form class="form" method="POST" action="{{url_for("insertion_artiste")}}">
+  <div class="form-group row">
+    <label for="insertion-artiste-nom" class="col-sm-2 col-form-label">Nom d'un artiste</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="insertion-artiste-nom" name="nom" placeholder="ex. Picasso">
+    </div>
+  </div>
+   <div class="form-group row">
+    <label for="insertion-artiste-naissance" class="col-sm-2 col-form-label">Date de naissance</label>
+    <div class="col-sm-10">
+      <input type="number" class="form-control" id="insertion-artiste-naissance" name="naissance" placeholder="ex. 1881">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="insertion-artiste-mort" class="col-sm-2 col-form-label">Date de décès</label>
+    <div class="col-sm-10">
+      <input type="number" class="form-control" id="insertion-artiste-mort" name="deces" placeholder="ex. 1973">
+    </div>
+  </div>
+   <div class="form-group row">
+    <label for="insertion-artiste-activite" class="col-sm-2 col-form-label">Activité de l'artiste</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="insertion-artiste-activite" name="activite" placeholder="ex. Peintre">
+    </div>
+  </div>
+  <div>
+    <button type="submit" class="btn btn-primary">Valider</button>
+  </div>
+</form>
+{% endblock %}
