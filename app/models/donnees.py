@@ -17,7 +17,13 @@ class Artiste(db.Model):
     def insertion_artiste(nom, date_naissance, date_mort, activite):
         """ Permet l'insertion d'un nouvel artiste en base
         :param nom: nom de l'artiste
+        :param date_naissance: date de naissance de l'artiste
+        :param date_mort: date de mort de l'artiste
+        :param activite: activité de l'artiste
         :type nom: str
+        :type date_naissance: int
+        :type date_mort: int
+        :type activite: str
         :return: nouvelle entrée en base
         :rtype: tuple
         """
@@ -70,7 +76,17 @@ class Artiste(db.Model):
     def modification_artiste(nom, date_naissance, date_mort, activite, ids_oeuvres, id_artiste):
         """ Permet la modification d'une entrée de la table Artiste
             :param nom: nom de l'artiste
+            :param date_naissance: date de naissance de l'artiste
+            :param date_mort: date de mort de l'artiste
+            :param activite: activité de l'artiste
+            :param ids_oeuvres: liste des id des oeuvres
+            :param id_artiste: id de l'artiste
             :type nom: str
+            :type date_naissance: int
+            :type date_mort: int
+            :type activite: str
+            :type ids_oeuvres: list
+            :type id_artiste: int
             :return: entrée modifiée en base
             :rtype: tuple
             """
@@ -143,7 +159,13 @@ class Artiste(db.Model):
     def suppression_artiste(id_artiste):
         """ Permet la suppression d'une entrée de la table Artiste
             :param nom: nom de l'artiste
+            :param date_naissance: date de naissance de l'artiste
+            :param date_mort: date de mort de l'artiste
+            :param activite: activité de l'artiste
             :type param: str
+            :type date_naissance: int
+            :type date_mort: int
+            :type activite: str
             :return: entrée supprimée en base
             :rtype: tuple
             """
@@ -193,11 +215,15 @@ class Lieu(db.Model):
 
     @staticmethod
     def insertion_lieu(nom, ville, pays):
-        """ Permet l'insersion d'un nouveau lieu en base
-                :param nom: nom du lieu
-        :type nom: str
-        :return: nouvelle entrée en base
-        :rtype: tuple
+        """ Permet l'insertion d'un nouveau lieu en base
+            :param nom: nom du lieu
+            :param ville: nom de la ville du lieu
+            :param pays: nom du pays du lieu
+            :type nom: str
+            :type ville: str
+            :type pays: str
+            :return: nouvelle entrée en base
+            :rtype: tuple
         """
         # création d'une liste vide pour y stocker les éventuelles erreurs
         erreurs = []
@@ -246,7 +272,12 @@ class Lieu(db.Model):
     def modification_lieu(nom, ville, pays, id_lieu):
         """ Permet la modification d'une entrée de la table Lieu
             :param nom: nom du lieu
+            :param ville: nom de la ville du lieu
+            :param pays: nom du pays du lieu
             :type nom: str
+            :type ville: str
+            :type pays: str
+            :type id_lieu: int
             :return: entrée modifiée en base
             :rtype: tuple
             """
@@ -295,8 +326,8 @@ class Lieu(db.Model):
     @staticmethod
     def supprimer_lieu(id_lieu):
         """ Permet la suppression d'une entrée de la table Lieu
-            :param nom: nom du lieu
-            :type param: str
+            :param id_lieu: id du lieu
+            :type id_lieu: int
             :return: entrée supprimée en base
             :rtype: tuple
             """
@@ -318,19 +349,13 @@ class Lieu(db.Model):
 
         try:
             # on supprime les relations du lieu avec les oeuvres
-            # for oeuvre in (Oeuvre.query.filter(Oeuvre.lieu_conservation == id_lieu).all()):
-                # oeuvre.lieu_conservation = None
-                # db.session.update(oeuvre)
-            # On l'ajoute au transport vers la base de données
-            try:
-
-                Oeuvre.query.filter_by(lieu_conservation=id_lieu).update(dict(lieu_conservation=None))
-                db.session.delete(current_lieu.first())
-                db.session.commit()
-                return True, None
-            except Exception as erreur:
-                db.session.rollback()
-                return False, [str(erreur)," Vous ne pouvez pas supprimer ce lieu car des oeuvres de notre base y sont conservées"]
+            Oeuvre.query.filter_by(lieu_conservation=id_lieu).update(dict(lieu_conservation=None))
+            db.session.delete(current_lieu.first())
+            db.session.commit()
+            return True, None
+        except Exception as erreur:
+            db.session.rollback()
+            return False, [str(erreur)," Vous ne pouvez pas supprimer ce lieu car des oeuvres de notre base y sont conservées"]
 
         except Exception as erreur:
             # si le résultat du try retourne une erreur, la session de la base de données reste ouverte
@@ -351,9 +376,15 @@ class Oeuvre(db.Model):
 
     @staticmethod
     def insertion_oeuvre(titre, creation, id_lieu, ids_artistes):
-        """ Permet l'insersion d'une nouvelle oeuvre en base
-            :param nom: nom de l'oeuvre
-            :type nom: str
+        """ Permet l'insertion d'une nouvelle oeuvre en base
+            :param titre: titre de l'oeuvre
+            :param creation: date de creation de l'oeuvre
+            :param id_lieu: id du lieu
+            :param ids_artistes: liste des id des artistes
+            :type titre: str
+            :type creation: int
+            :type id_lieu: int
+            :type ids_artistes: list
             :return: nouvelle entrée en base
             :rtype: tuple
             """
@@ -366,7 +397,7 @@ class Oeuvre(db.Model):
         if not id_lieu:
             erreurs.append("Le lieu fourni est vide")
 
-        # On vérifie que personne n'a utilisé cet email ou ce login
+        # On vérifie que cette oeuvre est bien en base
         uniques = Oeuvre.query.filter(
             Oeuvre.oeuvre_titre == titre
         ).count()
@@ -414,8 +445,16 @@ class Oeuvre(db.Model):
     @staticmethod
     def modification_oeuvre(titre, creation, id_lieu, ids_artistes, id_oeuvre):
         """ Permet la modification d'une entrée de la table Oeuvre
-            :param nom: nom de l'oeuvre
-            :type nom: str
+            :param titre: titre de l'oeuvre
+            :param creation: date de creation de l'oeuvre
+            :param id_lieu: id du lieu
+            :param ids_artistes: liste des id des artistes
+            :param id_oeuvre: id de l'oeuvre
+            :type titre: str
+            :type creation: int
+            :type id_lieu: int
+            :type ids_artistes: list
+            :type id_oeuvre: int
             :return: entrée modifiée en base
             :rtype: tuple
             """
@@ -481,8 +520,8 @@ class Oeuvre(db.Model):
     @staticmethod
     def suppression_oeuvre(id_oeuvre):
         """ Permet la suppression d'une entrée de la table Oeuvre
-            :param nom: nom de l'oeuvre
-            :type param: str
+            :param id_oeuvre: id de l'oeuvre
+            :type id_oeuvre: int
             :return: entrée supprimée en base
             :rtype: tuple
             """
@@ -501,7 +540,6 @@ class Oeuvre(db.Model):
         # Si on a au moins une erreur
         if len(erreurs) > 0:
             return False, erreurs
-
 
         try:
             # on supprime les relations de l'oeuvre avec les artistes

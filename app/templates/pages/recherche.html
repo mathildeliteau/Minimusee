@@ -16,7 +16,7 @@
                 <li><a href="{{url_for('fiche_oeuvre', id_oeuvre=oeuvre.oeuvre_id)}}">{{oeuvre.oeuvre_titre}}</a>
                 <a href="{{url_for('fiche_oeuvre', id_oeuvre=oeuvre.oeuvre_id)}}"><i class="icon-file"></i></a>
                 <a href="{{url_for('modifier_oeuvre', id_oeuvre=oeuvre.oeuvre_id)}}"><i class="icon-pencil"></i></a>
-                <a href="{{url_for('supprimer_oeuvre', id_oeuvre=oeuvre.oeuvre_id)}}"><i class="icon-eraser"></i></a></li>
+                <a href="{{url_for('fiche_oeuvre', id_oeuvre=oeuvre.oeuvre_id)}}"><i class="icon-eraser"></i></a></li>
             {% endfor %}
         </ul>
     <nav aria-label="research-pagination">
@@ -40,7 +40,7 @@
                 </li>
             {% endif %}
 
-        {%- endfor %}
+        {% endfor %}
       </ul>
     </nav>
     {% endif %}
