@@ -20,7 +20,7 @@ def accueil():
 @app.route("/insertion_lieu", methods=["GET", "POST"])
 def insertion_lieu():
     """ Route permettant l'insertion d'un nouveau lieu
-        """
+    """
     if request.method == "POST":
         statut, donnees = Lieu.insertion_lieu(
             nom=request.form.get("nom", None),
@@ -41,7 +41,7 @@ def insertion_lieu():
 @app.route("/insertion_artiste", methods=["GET", "POST"])
 def insertion_artiste():
     """ Route permettant l'insertion d'un nouvel artiste
-            """
+    """
     if request.method == "POST":
         statut, donnees = Artiste.insertion_artiste(
             nom=request.form.get("nom", None),
@@ -62,7 +62,7 @@ def insertion_artiste():
 @app.route("/insertion_oeuvre", methods=["GET", "POST"])
 def insertion_oeuvre():
     """ Route permettant l'insertion d'une nouvelle oeuvre
-            """
+    """
     lieux = Lieu.query.all()
     artistes = Artiste.query.all()
     if request.method == "POST":
@@ -142,7 +142,7 @@ def deconnexion():
 @app.route("/fiche_oeuvre/<int:id_oeuvre>", methods=["POST", "GET"])
 def fiche_oeuvre(id_oeuvre):
     """ Route permettant l'affichage de la fiche d'une oeuvre
-                """
+    """
     oeuvre = Oeuvre.query.filter(Oeuvre.oeuvre_id == id_oeuvre).first()
     lieu = Lieu.query.filter(Lieu.lieu_id == oeuvre.lieu_conservation).first()
     # récupération des id des artistes; .all() car il y en a plusieurs
@@ -165,7 +165,7 @@ def fiche_oeuvre(id_oeuvre):
 @app.route("/fiche_artiste/<int:id_artiste>", methods=["POST", "GET"])
 def fiche_artiste(id_artiste):
     """ Route permettant l'affichage de la fiche d'un artiste
-                    """
+    """
     artiste = Artiste.query.filter(Artiste.artiste_id == id_artiste).first()
     oeuvres = [Oeuvre.query.filter(Oeuvre.oeuvre_id == oeuvre.oeuvre_id).first() for oeuvre in Oeuvre_artiste.query.filter(id_artiste==Oeuvre_artiste.artiste_id).all()]
     if request.method=="POST":
@@ -182,7 +182,7 @@ def fiche_artiste(id_artiste):
 @app.route("/fiche_lieu/<int:id_lieu>", methods=["POST", "GET"])
 def fiche_lieu(id_lieu):
     """ Route permettant l'affichage de la fiche d'un lieu
-                    """
+    """
     lieu = Lieu.query.filter(Lieu.lieu_id == id_lieu).first()
     oeuvres = Oeuvre.query.filter(Oeuvre.lieu_conservation == id_lieu).all()
     if request.method=="POST":
@@ -199,7 +199,7 @@ def fiche_lieu(id_lieu):
 @app.route("/modifier_oeuvre/<int:id_oeuvre>", methods=["GET", "POST"])
 def modifier_oeuvre(id_oeuvre):
     """ Route permettant la modification de la fiche d'une oeuvre
-                    """
+    """
     lieux = Lieu.query.all()
     artistes = Artiste.query.all()
     # récupération de l'oeuvre et ses informations avant de cliquer sur modifier
@@ -231,7 +231,7 @@ def modifier_oeuvre(id_oeuvre):
 @app.route("/modifier_artiste/<int:id_artiste>", methods=["GET", "POST"])
 def modifier_artiste(id_artiste):
     """ Route permettant la modification de la fiche d'un artiste
-                        """
+    """
     oeuvres = Oeuvre.query.all()
     # récupération de l'artiste et ses informations avant de cliquer sur modifier
     artiste = Artiste.query.filter(Artiste.artiste_id == id_artiste).first()

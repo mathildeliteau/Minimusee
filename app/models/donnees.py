@@ -143,8 +143,10 @@ class Artiste(db.Model):
     def suppression_artiste(id_artiste):
         """ Permet la suppression d'une entrée de la table Artiste
             :param nom: nom de l'artiste
-            :type param: var
-            :returns: entrée supprimée en base"""
+            :type param: str
+            :return: entrée supprimée en base
+            :rtype: tuple
+            """
         # Création d'une liste vide pour stcker les éventuelles erreurs
         erreurs = []
         if not id_artiste:
@@ -192,9 +194,11 @@ class Lieu(db.Model):
     @staticmethod
     def insertion_lieu(nom, ville, pays):
         """ Permet l'insersion d'un nouveau lieu en base
-                :param: champs de la table Lieu
-                :type param: var
-                :returns: nouvelle entrée en base"""
+                :param nom: nom du lieu
+        :type nom: str
+        :return: nouvelle entrée en base
+        :rtype: tuple
+        """
         # création d'une liste vide pour y stocker les éventuelles erreurs
         erreurs = []
         if not nom:
@@ -241,9 +245,11 @@ class Lieu(db.Model):
     @staticmethod
     def modification_lieu(nom, ville, pays, id_lieu):
         """ Permet la modification d'une entrée de la table Lieu
-                                :param: champs de la table Lieu
-                                :type param: var
-                                :returns: entrée modifiée en base"""
+            :param nom: nom du lieu
+            :type nom: str
+            :return: entrée modifiée en base
+            :rtype: tuple
+            """
         erreurs = []
         if not nom:
             erreurs.append("Le nom fourni est vide")
@@ -289,9 +295,11 @@ class Lieu(db.Model):
     @staticmethod
     def supprimer_lieu(id_lieu):
         """ Permet la suppression d'une entrée de la table Lieu
-                                                :param: champs de la table Lieu
-                                                :type param: var
-                                                :returns: entrée supprimée en base"""
+            :param nom: nom du lieu
+            :type param: str
+            :return: entrée supprimée en base
+            :rtype: tuple
+            """
         # Création d'une liste vide qui stocke les éventuelles erreurs
         erreurs = []
         if not id_lieu:
@@ -344,9 +352,11 @@ class Oeuvre(db.Model):
     @staticmethod
     def insertion_oeuvre(titre, creation, id_lieu, ids_artistes):
         """ Permet l'insersion d'une nouvelle oeuvre en base
-                        :param: champs de la table Oeuvre
-                        :type param: var
-                        :returns: nouvelle entrée en base"""
+            :param nom: nom de l'oeuvre
+            :type nom: str
+            :return: nouvelle entrée en base
+            :rtype: tuple
+            """
         # création d'une liste vide pour y stocker les éventuelles erreurs
         erreurs = []
         if not titre:
@@ -381,7 +391,7 @@ class Oeuvre(db.Model):
             oeuvre_id = (Oeuvre.query.filter(Oeuvre.oeuvre_titre == titre).first()).oeuvre_id
             try:
                 for id_artiste in ids_artistes:
-                    oeuvre_artiste=Oeuvre_artiste(
+                    oeuvre_artiste = Oeuvre_artiste(
                         oeuvre_id=int(oeuvre_id),
                         artiste_id=int(id_artiste)
                     )
@@ -392,9 +402,6 @@ class Oeuvre(db.Model):
             except Exception as erreur:
                 db.session.rollback()
                 return False, [str(erreur)]
-            # On envoie le paquet
-
-            # On renvoie l'oeuvre'
 
         except Exception as erreur:
             # si le résultat du try retourne une erreur, la session de la base de données reste ouverte
@@ -407,9 +414,11 @@ class Oeuvre(db.Model):
     @staticmethod
     def modification_oeuvre(titre, creation, id_lieu, ids_artistes, id_oeuvre):
         """ Permet la modification d'une entrée de la table Oeuvre
-                        :param: champs de la table Oeuvre
-                        :type param: var
-                        :returns: entrée modifiée en base"""
+            :param nom: nom de l'oeuvre
+            :type nom: str
+            :return: entrée modifiée en base
+            :rtype: tuple
+            """
         # on caste ids_artistes pour avoir des integer
         ids_artistes = [int(id_artiste) for id_artiste in ids_artistes]
         erreurs = []
@@ -422,7 +431,7 @@ class Oeuvre(db.Model):
         if not id_oeuvre:
             erreurs.append("L'id de l'oeuvre fourni est vide")
 
-        # On vérifie que personne n'a utilisé cet email ou ce login
+        # On vérifie que l'oeuvre est bien en base
         current_oeuvre = Oeuvre.query.filter(
             Oeuvre.oeuvre_id == id_oeuvre
         )
@@ -432,7 +441,8 @@ class Oeuvre(db.Model):
         # Si on a au moins une erreur
         if len(erreurs) > 0:
             return False, erreurs
-        # récupération du premier résultat de la requête current_oeuvre (pour voir la requête SQL faire un print(current_oeuvre)
+        # récupération du premier résultat de la requête current_oeuvre
+        # (pour voir la requête SQL faire un print(current_oeuvre)
         oeuvre = current_oeuvre.first()
         if titre:
             oeuvre.oeuvre_titre = titre
@@ -471,15 +481,17 @@ class Oeuvre(db.Model):
     @staticmethod
     def suppression_oeuvre(id_oeuvre):
         """ Permet la suppression d'une entrée de la table Oeuvre
-                                                :param: champs de la table Oeuvre
-                                                :type param: var
-                                                :returns: entrée supprimée en base"""
+            :param nom: nom de l'oeuvre
+            :type param: str
+            :return: entrée supprimée en base
+            :rtype: tuple
+            """
         # Création d'une liste vide qui stocke les éventuelles erreurs
         erreurs = []
         if not id_oeuvre:
             erreurs.append("L'id fourni est vide")
 
-        # On vérifie que personne n'a ? cette oeuvre
+        # On vérifie que l'oeuvre est bien en base
         current_oeuvre = Oeuvre.query.filter(
             Oeuvre.oeuvre_id == id_oeuvre
         )
@@ -493,9 +505,6 @@ class Oeuvre(db.Model):
 
         try:
             # on supprime les relations de l'oeuvre avec les artistes
-            #db.session.execute("""
-            #delete from Oeuvre_artiste where oeuvre_id="""+str(id_oeuvre)+"""
-            #""")
             for artiste in (Oeuvre_artiste.query.filter(Oeuvre_artiste.oeuvre_id==id_oeuvre).all()):
                 db.session.delete(artiste)
             # On l'ajoute au transport vers la base de données
